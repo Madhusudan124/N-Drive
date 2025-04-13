@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Drive</title>
+  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap-icons.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/styles.css" />
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+</head>
+
+<body>
+  <div class="class_1" style="background-color: #007bff">
+    <div class="class_2" style="background-color: #007bff">
+      <img src="assets/images/cloud.png" class="class_3" style="width: 98%" />
+    </div>
+    <div class="class_4" style="background-color: #007bff; color: white">
+      <h1 class="class_5" style="font-family: 'Poppins', sans-serif; font-size: x-large">
+        N DRIVE
+      </h1>
+    </div>
+    <div class="class_7" style="background-color: #007bff">
+      <img src="assets/images/user.png" class="class_8" />
+      <div class="class_9" style="color: white">
+        Hi <span class="username">User</span>
+        <a href="#" onclick="table.logout()" style="color: rgb(255, 0, 0)"><img src="assets/images/power-off.png"
+            height="30" alt="logout"></a>
+      </div>
+    </div>
+  </div>
+  <div class="class_10">
+    <div class="class_11">
+      <button onclick="action.show_new_folder()" class="class_12">
+        New Folder
+      </button>
+      <div class="class_13" style="cursor: context-menu">
+        <div class="class_9">Drive Space</div>
+        <div class="class_14">
+          <div class="js-drive-space-percent class_15"></div>
+        </div>
+        <div class="js-drive-space-text class_9">8Gb / 10Gb</div>
+      </div>
+      <div id="MY DRIVE" onclick="mode.set(this.id);table.change_folder_by_id(0)" class="class_16">
+        <i class="bi bi-cloud-arrow-up-fill class_17"></i>
+        <div class="class_9">My Drive</div>
+      </div>
+      <div id="FAVORITES" onclick="mode.set(this.id)" class="class_18">
+        <i class="bi bi-star-fill class_17"></i>
+        <div class="class_9">Favorites</div>
+      </div>
+      <div id="RECENT" onclick="mode.set(this.id)" class="class_18">
+        <i class="bi bi-alarm-fill class_17"></i>
+        <div class="class_9">Recent</div>
+      </div>
+      <div id="TRASH" onclick="mode.set(this.id)" class="class_18">
+        <i class="bi bi-trash3-fill class_17"></i>
+        <div class="class_9">Trash</div>
+      </div>
+    </div>
+    <div class="class_22">
+      <div id="breadcrumbs" class="class_23">
+        <div onclick="table.change_folder_by_id(0)" class="class_24">
+          My Drive
+        </div>
+      </div>
+      <h1 class="js-mode-title class_27" style="font-family: 'Poppins', sans-serif; font-size: medium">
+        MY DRIVE
+      </h1>
+      <div class="class_28">
+        <table oncontextmenu="submenu.show(event)" class="item_class_0 class_29" style="font-size: 13px">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th>File Name</th>
+              <th scope="col"></th>
+              <th scope="col">Type</th>
+              <th scope="col">Shared</th>
+              <th scope="col">Updated</th>
+              <th scope="col">Size</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody id="table-body" ondblclick="table.change_folder(event)" onclick="table.select(event)"></tbody>
+        </table>
+      </div>
+      <div class="class_41" style="display: flex">
+        <span class="js-page-number" style="text-align: center; width: 100%; display: inline-block"></span>
+        <div class="class_44"></div>
+      </div>
+    </div>
+    <div class="class_47">
+      <h1 class="class_48">File Details</h1>
+      <div class="class_28"></div>
+      <div class="js-file-info hide class_49">
+        <table class="item_class_2 class_50">
+          <tbody>
+            <tr>
+              <th>File:</th>
+              <td class="file_name"></td>
+            </tr>
+            <tr>
+              <th>Type:</th>
+              <td class="type"></td>
+            </tr>
+            <tr>
+              <th>Size:</th>
+              <td class="size"></td>
+            </tr>
+            <tr>
+              <th>Date Added:</th>
+              <td class="date_created"></td>
+            </tr>
+            <tr>
+              <th>Date Modified:</th>
+              <td class="date_updated"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="js-info-no-file class_51">
+        <i class="bi bi-info-circle-fill class_17"></i>
+        <div class="class_9">No file was selected</div>
+      </div>
+      <label class="drop-zone" ondrop="upload.drop(event)" ondragover="upload.dragOver(event)"
+        ondragleave="upload.dropZone.removeHighlight()">
+        <i class="bi bi-cloud-arrow-up-fill class_6" style="color: white"></i>
+        Drag and drop files here or click to upload (less than 50mb)
+        <input onchange="upload.send(this.files)" type="file" class="hide" multiple />
+        <div class="js-prog-holder hide class_13" style="
+              position: static;
+              height: auto;
+              background-color: transparent;
+            ">
+          <div class="class_14">
+            <div class="js-prog class_15"></div>
+          </div>
+          <div class="js-prog-text class_9">50%</div>
+          <button onclick="upload.cancel()" class="class_42">
+            Cancel Upload
+          </button>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <!--modals-->
+  <!--sub menu-->
+  <div id="submenu" class="class_45 hide" style="position: absolute">
+    <div onclick="table.preview_file()" class="js-preview-button class_46">
+      <i class="bi bi-eye class_17"></i>
+      <div class="class_9">Preview</div>
+    </div>
+    <div onclick="table.download_file()" class="js-download-button class_46">
+      <i class="bi bi-cloud-download-fill class_17"></i>
+      <div class="class_9">Download</div>
+    </div>
+    <div onclick="table.delete_row()" class="class_46">
+      <i class="bi bi-trash3-fill class_17"></i>
+      <div class="class_9">Delete</div>
+    </div>
+    <div onclick="table.restore_row()" class="js-restore-button class_46">
+      <i class="bi bi-arrow-counterclockwise class_17"></i>
+      <div class="class_9">Restore</div>
+    </div>
+    <div class="class_46" onclick="action.show_share_file()">
+      <i class="bi bi-share-fill class_17"></i>
+      <div class="class_9">Share</div>
+    </div>
+    <div onclick="table.add_to_favorites()" class="js-favorites-button class_46">
+      <i class="bi bi-star-fill class_17"></i>
+      <div class="js-favorites-text class_9">Add to favorites</div>
+    </div>
+  </div>
+  <!--end sub menu-->
+
+  <!-- Prompt Box HTML -->
+  <div id="renamePrompt" class="prompt-box">
+    <input type="text" id="newName" placeholder="Enter new name" />
+    <button onclick="submitRename()">Submit</button>
+    <button onclick="closeRenamePrompt()">Cancel</button>
+  </div>
+
+  <!-- Move Prompt -->
+  <div id="movePrompt" class="modal hide">
+    <div class="modal-content">
+      <span class="close" onclick="closeMovePrompt()">&times;</span>
+      <h2>Move File</h2>
+      <input type="text" id="moveFileName" placeholder="File Name" required />
+      <input type="text" id="moveDestination" placeholder="Destination Path" required />
+      <button onclick="moveFile()">Move</button>
+    </div>
+  </div>
+
+  <!-- start new folder modal-->
+  <div class="js-new-folder hide" onclick="this.classList.add('hide')" style="
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100vw;
+        height: 100vh;
+        background-color: #00000088;
+      ">
+    <div onclick="event.stopPropagation()" style="
+          transform: translate(-50%, -50%);
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 100%;
+          max-width: 400px;
+          min-height: 200px;
+          background-color: white;
+          padding: 10px;
+          text-align: center;
+        ">
+      <div onclick="document.querySelector('.js-new-folder').classList.add('hide')" style="text-align: right">
+        <button class="class_42" style="padding-top: 4px; padding-bottom: 4px; background-color: red">
+          X
+        </button>
+      </div>
+      <h3><i class="bi bi-folder-fill"></i> New Folder</h3>
+      <input class="js-new-folder-input" type="text" style="width: 100%; padding: 1em; border: solid thin #ccc"
+        name="" />
+      <button onclick="action.new_folder(this)" class="class_42" style="width: 100px">
+        Save
+      </button>
+    </div>
+  </div>
+  <!-- end new folder modal-->
+
+  <!-- start share modal-->
+  <div class="js-share hide" onclick="this.classList.add('hide')" style="
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100vw;
+        height: 100vh;
+        background-color: #00000088;
+      ">
+    <div onclick="event.stopPropagation()" style="
+          transform: translate(-50%, -50%);
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 100%;
+          max-width: 400px;
+          min-height: 200px;
+          background-color: white;
+          padding: 10px;
+          text-align: center;
+        ">
+      <div onclick="document.querySelector('.js-share').classList.add('hide')" style="text-align: right">
+        <button class="class_42" style="padding-top: 4px; padding-bottom: 4px; background-color: red">
+          X
+        </button>
+      </div>
+      <h3><i class="bi bi-share-fill"></i> Share File</h3>
+      <div class="js-share-filename" style="padding: 10px; background-color: #eee"></div>
+      <div style="text-align: left; padding: 10px; border: solid thin #eee">
+        <label>
+          <input class="radio js-share-mode-0" type="radio" value="0" name="share" />
+          Dont Share
+        </label>
+        <br />
+        <label>
+          <input class="radio js-share-mode-2" type="radio" value="2" name="share" />
+          Share to public
+        </label>
+        <br />
+        <label>
+          <input class="radio js-share-mode-1" type="radio" value="1" name="share" />
+          Share to specific people
+        </label>
+        <br />
+        <div style="padding: 10px; border: solid thin #eee">
+          <small>Type an email and click add:</small>
+          <br />
+          <div class="access-email-input">
+            <input class="js-access-email-input" type="text" name="" />
+            <button onclick="share.add(this.parentNode.querySelector('.js-access-email-input').value.trim())">
+              Add
+            </button>
+          </div>
+          <div class="js-access-email-holder" style="max-height: 100px; overflow-y: auto"></div>
+        </div>
+        <br />
+        <label>File link:</label>
+        <br />
+        <input class="js-share-link" value="" type="text" style="width: 100%; padding: 1em; border: solid thin #ccc"
+          name="link" />
+      </div>
+      <button onclick="action.share_file(this)" class="class_42" style="width: 100px">
+        Save
+      </button>
+    </div>
+  </div>
+  <!-- end share modal-->
+  <script src="scripts.js"></script>
+  <script>
+    function openStorage() {
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "api.php", true);
+      xhr.setRequestHeader(
+        "Content-Type",
+        "application/x-www-form-urlencoded"
+      );
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+          if (response.success) {
+            // Handle the response data
+            console.log("Files:", response.rows);
+            // Implement logic to display files and handle files > 35MB
+            const largeFiles = response.rows.filter(
+              (file) => file.file_size > 35
+            );
+            if (largeFiles.length > 0) {
+              alert("There are files larger than 35MB.");
+              console.log("Large Files:", largeFiles);
+            }
+          } else {
+            alert("Failed to fetch storage data.");
+          }
+        }
+      };
+
+      xhr.send("data_type=get_storage_data");
+    }
+  </script>
+</body>
+
+</html>

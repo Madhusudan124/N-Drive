@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="assets_signup/css/bootstrap-icons.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="assets_signup/css/styles.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0px;
+        box-sizing: border-box;
+        text-decoration: none;
+        border: none;
+        outline: none;
+        scroll-behavior: smooth;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background-color: #007bff;
+        font-family: Arial, sans-serif;
+      }
+      .class_1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .class_2 {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 2px 8px 11px rgba(0, 0, 0, 0.336);
+        max-width: 400px;
+        width: 100%;
+      }
+      .class_3 {
+        text-align: center;
+        color: #007bff;
+      }
+      .class_4 {
+        display: block;
+        margin: 0 auto 20px;
+        max-width: 100%;
+        border-radius: 8px;
+      }
+      .class_5 {
+        text-align: center;
+        color: #007bff;
+        margin-bottom: 20px;
+      }
+      .class_6 {
+        margin-bottom: 20px;
+      }
+      .class_7 {
+        margin-bottom: 10px;
+      }
+      .class_8 {
+        display: block;
+        margin-bottom: 5px;
+        color: #007bff;
+        font-weight: bold;
+      }
+      .class_9,
+      .class_10 {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .class_11 {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .class_11:hover {
+        background-color: blue;
+      }
+      .js-error-banner {
+        background-color: #ffb7b7;
+        color: #7b0000;
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 20px;
+        border-radius: 4px;
+      }
+      .hide {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="class_1">
+      <form
+        onsubmit="login.submit(event)"
+        method="post"
+        enctype="multipart/form-data"
+        class="class_2"
+      >
+        <h1 class="class_3" style="font-family: Poppins; font-size: 2.5rem">
+          MY DRIVE
+        </h1>
+        <br />
+        <!-- <img
+          src="assets_signup/images/woman-coming-other-woman-with-ideas-project_74855-11211.jpg"
+          class="class_4"
+        /> -->
+        <h1 class="class_5">LOGIN</h1>
+        <br />
+        <div class="js-error-banner hide">Please fix the errors below!</div>
+        <div class="class_6">
+          <div class="class_7">
+            <label class="class_8">EMAIL</label>
+            <input
+              placeholder="Enter a valid Email"
+              type="email"
+              name="email"
+              class="class_10"
+            />
+          </div>
+          <small
+            class="error error-email hide"
+            style="color: red; display: block"
+          ></small>
+          <div class="class_7">
+            <label class="class_8">PASSWORD</label>
+            <input
+              placeholder="Enter a password"
+              type="password"
+              name="password"
+              class="class_9"
+            />
+          </div>
+          <small
+            class="error error-password hide"
+            style="color: red; display: block"
+          ></small>
+        </div>
+        <div style="padding: 10px; text-align: center">
+          Don't have an account? <a href="signup.html">Signup here</a>
+        </div>
+        <button class="js-button class_11">LOGIN</button>
+      </form>
+    </section>
+    <script>
+      const login = {
+        uploading: false,
+        submit: function (e) {
+          e.preventDefault();
+          if (login.uploading) {
+            alert("Already uploading. please wait...");
+            return;
+          }
+          let button = document.querySelector(".js-button");
+          button.innerHTML = `Saving...`;
+          let myform = new FormData();
+          myform.append("data_type", "user_login");
+          let inputs = e.currentTarget.querySelectorAll(
+            "input,select,textarea"
+          );
+          for (var i = 0; i < inputs.length; i++) {
+            myform.append(inputs[i].name, inputs[i].value.trim());
+          }
+          login.uploading = true;
+          let xhr = new XMLHttpRequest();
+          xhr.addEventListener("readystatechange", function () {
+            if (xhr.readyState == 4) {
+              login.uploading = false;
+              button.innerHTML = `LOGIN`;
+              if (xhr.status == 200) {
+                let obj = JSON.parse(xhr.responseText);
+                document
+                  .querySelector(".js-error-banner")
+                  .classList.add("hide");
+                if (obj.success && obj.data_type == "user_login") {
+                  window.location.href = "index.html";
+                } else {
+                  let form = document.querySelector("form");
+                  let errors = document.querySelectorAll(".error");
+                  document
+                    .querySelector(".js-error-banner")
+                    .classList.remove("hide");
+                  for (var i = 0; i < errors.length; i++) {
+                    errors[i].innerHTML = "";
+                    errors[i].classList.add("hide");
+                  }
+                  for (key in obj.errors) {
+                    let item = document.querySelector(".error-" + key);
+                    item.innerHTML = obj.errors[key];
+                    item.classList.remove("hide");
+                  }
+                }
+              } else {
+                console.log(xhr.responseText);
+              }
+            }
+          });
+          xhr.open("post", "api.php", true);
+          xhr.send(myform);
+        },
+      };
+    </script>
+  </body>
+</html>
